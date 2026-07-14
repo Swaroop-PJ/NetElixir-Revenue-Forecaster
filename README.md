@@ -1,5 +1,5 @@
 # 📈 NetElixir Revenue Forecaster — AIgnition 3.0
-### 🏆 Multi-Agent AI System & Interactive Marketing Dashboard
+### 🏆 Track B Multi-Agent AI System & Interactive Marketing Dashboard
 
 <p align="center">
   <img src="https://img.shields.io/badge/NetElixir-AIgnition%203.0-blue?style=for-the-badge&logo=target" alt="Hackathon">
@@ -32,7 +32,7 @@ The user interface (`app.py`) functions as a modern marketing analytics SaaS hub
 * **📊 Live Metric Cards:** Instantly updating ROI, forecasted revenue multipliers, and click-through rates.
 * **🎚️ Dynamic Spend Sliders:** Allows decision-makers to manually scale advertising budgets across Google, Meta, and Bing to see real-time revenue impact.
 * **📈 Interactive Plotly Visualizations:** Beautiful, responsive line and bar charts showing the direct correlation between ad-spend shifts and revenue projections.
-* **⚡ Glassmorphic Dark Mode:** Built with a custom, high-end theme designed to match NetElixir's corporate visual identity.
+
 
 ---
 
