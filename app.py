@@ -20,7 +20,7 @@ st.set_page_config(
 )
 
 st.title(" 📈 Enterprise Multi-Agent Forecasting & Portfolio Utility")
-st.markdown("### Powered by LangGraph-Style State Workstations")
+st.markdown("### Powered by Advanced Bayesian Predictive Engines")
 st.write("---")
 
 # -----------------------------------------------------------------
