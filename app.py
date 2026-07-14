@@ -8,12 +8,10 @@ from typing import TypedDict, List, Dict, Any, Annotated
 from dotenv import load_dotenv
 from google import genai
 
-# Load environment variables (.env)
 load_dotenv()
 
-# -----------------------------------------------------------------
 # SYSTEM SETUP & USER INTERFACE CONFIGURATION
-# -----------------------------------------------------------------
+
 st.set_page_config(
     page_title="NetElixir AIgnition 3.0 | Marketing Forecast Utility", 
     layout="wide"
@@ -23,9 +21,8 @@ st.title(" 📈 Enterprise Multi-Agent Forecasting & Portfolio Utility")
 st.markdown("### Powered by Advanced Bayesian Predictive Engines")
 st.write("---")
 
-# -----------------------------------------------------------------
-# STATE SCHEMA (TYPEDDICT WITH REDUCERS)
-# -----------------------------------------------------------------
+# STATE SCHEMA (TYPEDDICT)
+
 class ForeCastingState(TypedDict):
     """State schema governing our pipeline."""
     anamoly_logs: Annotated[List[str], operator.add]
@@ -35,9 +32,9 @@ class ForeCastingState(TypedDict):
     simulation_results: Dict[str, Any]
     executive_summary: str
 
-# -----------------------------------------------------------------
+
 # CONTROL PANEL SIDEBAR
-# -----------------------------------------------------------------
+
 st.sidebar.header("🕹️ Configuration Control Panel")
 
 planning_horizon = st.sidebar.selectbox(
@@ -62,9 +59,8 @@ meta_file = st.sidebar.file_uploader("Upload Meta Ads Stats CSV (Optional)", typ
 bing_file = st.sidebar.file_uploader("Upload Bing Ads Stats CSV (Optional)", type=["csv"])
 
 
-# -----------------------------------------------------------------
-# PIPELINE WORKSTATION AGENT NODES
-# -----------------------------------------------------------------
+
+# PIPELINE WORKSTATION AGENT NODE
 
 def workstation_1_ingest(state: ForeCastingState, g_file, m_file, b_file) -> Dict[str, Any]:
     """Node 1: Schema Standardizer & Data Sanitizer Engine with Campaign-Specific Lifespan calculations."""
@@ -256,7 +252,7 @@ def workstation_3_allocator(state: ForeCastingState, horizon: int, budget_pool: 
         base_roas = (hist_rev / hist_spend) if hist_spend > 0 else 1.0
         base_roas = min(base_roas, max_roas_cap)
         
-        # --- THE FIX: Calculate actual, non-diluted campaign run-rates ---
+        # Calculate actual, non-diluted campaign run-rates
         raw_daily_spend = hist_spend / n_c
         w_c = n_c / (n_c + shrinkage_half_life)
         smoothed_daily_spend = (w_c * raw_daily_spend) + ((1 - w_c) * global_daily_spend_prior)
@@ -371,9 +367,9 @@ def workstation_4_llm_narrative(state: ForeCastingState, horizon: int, budget_po
         }
 
 
-# -----------------------------------------------------------------
+
 # CENTRAL FLOW RUNTIME CONTROLLER
-# -----------------------------------------------------------------
+
 if google_file or meta_file or bing_file:
     
     current_state: ForeCastingState = {
@@ -412,7 +408,7 @@ if google_file or meta_file or bing_file:
         sim_res = current_state["simulation_results"]
         blended_portfolio_roas = sim_res["blended_revenue_projection"] / future_target_budget if future_target_budget > 0 else 0
 
-        # --- EXECUTIVE SCORECARD METRICS DISPLAY ---
+        # EXECUTIVE SCORECARD METRICS DISPLAY
         st.write("## 📌 Executive Optimization Dashboard")
         m_col1, m_col2, m_col3 = st.columns(3)
         m_col1.metric("Planning Target Window", f"{planning_horizon} Days")
@@ -421,7 +417,7 @@ if google_file or meta_file or bing_file:
         
         st.write("---")
         
-        # --- PORTFOLIO VISUALIZATION DESIGN PANELS ---
+        #  PORTFOLIO VISUALIZATION DESIGN PANELS 
         st.write("### 📊 Advanced Performance & Budget Allocation BI Workspace")
         
         chart_records = []
@@ -439,7 +435,7 @@ if google_file or meta_file or bing_file:
             
         ui_df = pd.DataFrame(chart_records)
         
-        # 1. PIE CHART: Occupies the upper section cleanly
+        # 1. PIE CHAR
         st.markdown("##### 🍕 Aggregate Portfolio Capital Allocations")
         channel_summary_chart = ui_df.groupby("Channel")["Budget"].sum().reset_index()
         
@@ -459,19 +455,19 @@ if google_file or meta_file or bing_file:
         
         st.write("---")
 
-        # 2. SCATTER PLOT: Occupies a full wide block to maximize scannability
+        # 2. SCATTER PLOT
         st.markdown("##### 🎯 Efficiency Frontier Workspace (Granular Campaign Positioning)")
         
         fig_scatter = go.Figure()
         
-        # Define uniform channel mappings for colors to match the pie chart perfectly
+        # Uniform channel mappings for colors to match the pie chart perfectly
         channel_colors = {
             "Google_Ads": "#1F77B4",
             "Meta_Ads": "#2CA02C",
             "Bing_Ads": "#FF7F0E"
         }
         
-        # Map campaign bubble sizing dynamically based on relative ROAS performance 
+        # Mapping campaign bubble sizing dynamically based on relative ROAS performance 
         # (Add a baseline minimum size so lower performance values don't vanish entirely)
         bubble_sizes = ui_df["Expected_ROAS"].apply(lambda x: max(8, min(x * 3.5, 35)))
         
@@ -499,7 +495,7 @@ if google_file or meta_file or bing_file:
             ))
             
         # Draw a horizontal target baseline matching portfolio blended average efficiency
-            # Draw a horizontal target baseline matching portfolio blended average efficiency
+        
         fig_scatter.add_hline(
             y=blended_portfolio_roas,
             line_dash="dash",
@@ -523,7 +519,7 @@ if google_file or meta_file or bing_file:
         )
         st.plotly_chart(fig_scatter, use_container_width=True)
 
-        # --- GRANULAR RANKING DATA TABLE MATRIX ---
+        #  GRANULAR RANKING DATA TABLE MATRIX 
         st.write("### 🔍 Granular Campaign Hierarchy Analytics Range Matrix")
         formatted_ui_df = ui_df.copy()
         formatted_ui_df = formatted_ui_df.rename(columns={
@@ -537,12 +533,12 @@ if google_file or meta_file or bing_file:
             use_container_width=True
         )
 
-        # --- WORKSTATION 4 AI GENERATED NARRATIVE PANEL ---
+        # WORKSTATION 4 AI GENERATED NARRATIVE PANEL
         st.write("---")
         st.write("### 🤖 Agentic Executive Insights Briefing")
         st.markdown(current_state["executive_summary"])
 
-        # --- SYSTEM MONITOR PIPELINE DIAGNOSTIC LOGS ---
+        #  SYSTEM MONITOR PIPELINE DIAGNOSTIC LOGS 
         with st.expander("🛠️ Core Multi-Agent System Pipeline Logs"):
             for log in current_state["anamoly_logs"]:
                 st.caption(f"⚙️ {log}")
